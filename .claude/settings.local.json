@@ -6,7 +6,8 @@
       "Bash(dotnet add *)",
       "Bash(git reset *)",
       "Bash(git rm *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

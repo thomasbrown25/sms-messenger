@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'https://localhost:5047'
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://localhost:5047'
 
 export async function sendSms({ toPhoneNumber, message }) {
   const response = await fetch(`${API_BASE}/api/sms/send`, {
