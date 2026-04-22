@@ -1,37 +1,38 @@
+using Microsoft.Extensions.Options;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 using sms_messenger_api.Models;
 
 namespace sms_messenger_api.Services;
 
-// Stub implementation — replace with a real provider (Twilio, AWS SNS, etc.)
-// For Twilio: install Twilio NuGet package and implement using TwilioClient
 public class SmsService : ISmsService
 {
-    private readonly IConfiguration _config;
+    private readonly TwilioSettings _settings;
     private readonly ILogger<SmsService> _logger;
 
-    public SmsService(IConfiguration config, ILogger<SmsService> logger)
+    public SmsService(IOptions<TwilioSettings> settings, ILogger<SmsService> logger)
     {
-        _config = config;
+        _settings = settings.Value;
         _logger = logger;
     }
 
-    public Task<SmsResponse> SendAsync(SmsRequest request)
+    public async Task<SmsResponse> SendAsync(SmsRequest request)
     {
-        // TODO: wire up your SMS provider here
-        // Example Twilio implementation:
-        //   TwilioClient.Init(_config["Sms:AccountSid"], _config["Sms:AuthToken"]);
-        //   var message = await MessageResource.CreateAsync(
-        //       body: request.Message,
-        //       from: new PhoneNumber(_config["Sms:FromNumber"]),
-        //       to: new PhoneNumber(request.ToPhoneNumber));
-        //   return new SmsResponse { Success = true, MessageSid = message.Sid };
+        TwilioClient.Init(_settings.AccountSid, _settings.AuthToken);
 
-        _logger.LogInformation("SMS stub: sending to {To}: {Message}", request.ToPhoneNumber, request.Message);
+        var message = await MessageResource.CreateAsync(
+            body: request.Message,
+            from: new PhoneNumber(_settings.FromNumber),
+            to: new PhoneNumber(request.ToPhoneNumber));
 
-        return Task.FromResult(new SmsResponse
+        _logger.LogInformation("SMS sent to {To} — SID: {Sid} Status: {Status}",
+            request.ToPhoneNumber, message.Sid, message.Status);
+
+        return new SmsResponse
         {
             Success = true,
-            MessageSid = $"STUB-{Guid.NewGuid():N}"
-        });
+            MessageSid = message.Sid
+        };
     }
 }

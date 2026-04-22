@@ -1,0 +1,11 @@
+# Secrets — never commit these
+sms-messenger-api/appsettings.Development.json
+sms-messenger-app/.env
+
+# .NET build output
+sms-messenger-api/bin/
+sms-messenger-api/obj/
+
+# Node
+sms-messenger-app/node_modules/
+sms-messenger-app/dist/

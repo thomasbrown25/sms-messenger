@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch API",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/sms-messenger-api.csproj",
+      "launchProfile": "http",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  ]
+}
